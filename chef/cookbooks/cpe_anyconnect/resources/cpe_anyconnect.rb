@@ -74,7 +74,17 @@ action_class do # rubocop:disable Metrics/BlockLength
         not_if { node.macos_min_package_installed?(pkg['receipt'], pkg['version']) }
       end
       not_if { anyconnect_vpn_connected? }
-      notifies :create, 'file[trigger_gui]', :immediately
+      if node['cpe_anyconnect']['keep_vpn_la']
+        notifies :create, 'file[trigger_gui]', :immediately
+      end
+    end
+
+    unless node['cpe_anyconnect']['keep_vpn_la']
+      # Delete Cisco AnyConnect VPN GUI LaunchAgent
+      launchd 'com.cisco.anyconnect.gui' do
+        action :delete
+        type 'agent'
+      end
     end
 
     # We only want the UI to trigger upon the first install and upgrades.

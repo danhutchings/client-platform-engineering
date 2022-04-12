@@ -14,6 +14,7 @@
 default['cpe_anyconnect'] = {
   'desktop_shortcut' => false,
   'install' => false,
+  'keep_vpn_la' => false,
   'la_gui_identifier' => 'com.cisco.anyconnect.gui',
   'manage' => false,
   'modules' => [
